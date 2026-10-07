@@ -1,0 +1,380 @@
+/* ============================================================================
+   15. GUEST PORTAL
+
+   The customer screens share the shell above, so this section is only what
+   is specific to dining: the greeting, the table they are sitting at, the
+   menu, the cart, and the bill.
+   ========================================================================= */
+
+/* ---- the greeting ---- */
+
+.cp-greeting {
+  position: relative;
+  padding: clamp(24px, 3.4vw, 44px) clamp(20px, 3vw, 40px);
+  margin-bottom: clamp(18px, 2.4vw, 26px);
+  border: 1px solid var(--pf-line);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      70% 120% at 8% -10%,
+      rgba(212, 169, 92, 0.12),
+      transparent 62%
+    ),
+    var(--pf-surface-2);
+  box-shadow: var(--pf-elev-2);
+  overflow: hidden;
+}
+
+/* One slow warm drift, the way light moves across a room. Stopped
+   entirely for reduced motion. */
+.cp-greeting::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  right: -12%;
+  width: 46%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse,
+    rgba(212, 169, 92, 0.11),
+    transparent 66%
+  );
+  animation: float-soft 12s var(--pf-ease) infinite;
+  pointer-events: none;
+}
+
+.cp-greeting > * {
+  position: relative;
+}
+
+.cp-greeting-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--pf-gold);
+}
+
+.cp-greeting h1 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(27px, 4.4vw, 46px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--pf-text);
+}
+
+.cp-greeting h1 .gold-text {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cp-greeting p {
+  margin: 0;
+  max-width: 56ch;
+  font-size: clamp(0.95rem, 1.4vw, 1.08rem);
+  line-height: 1.7;
+  color: var(--pf-text-2);
+}
+
+/* ---- the table this guest is sitting at ----
+   Reads back from the server, so it reflects the claim rather than
+   anything the browser kept. It sits under the page heading, not in a bar
+   of its own, so it reads as context rather than as chrome. */
+
+.table-context-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(18px, 2.4vw, 26px);
+  padding: 13px 18px;
+  border: 1px solid var(--pf-line);
+  border-radius: 15px;
+  background: var(--pf-surface-2);
+  box-shadow: var(--pf-elev-1);
+  font-size: 13px;
+  color: var(--pf-text-2);
+}
+
+.table-context-brand {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--pf-gold-light);
+}
+
+.table-context-divider {
+  color: var(--pf-line-strong);
+}
+
+.table-context-table {
+  font-weight: 700;
+  color: var(--pf-text);
+}
+
+.table-context-bar small {
+  margin-left: auto;
+  color: var(--pf-text-3);
+}
+
+/* ---- the footer ---- */
+
+.customer-footer {
+  padding: 26px 0 8px;
+  text-align: center;
+}
+
+.footer-credits strong {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pf-text-3);
+}
+
+/* ---- menu, cart, orders, bills ---- */
+
+.menu-tab-view,
+.cart-tab-view,
+.tracking-tab-view,
+.reservations-tab-view,
+.reviews-tab-view,
+.bill-tab-view,
+.loyalty-tab-view,
+.settings-tab-view,
+.overview-tab-view {
+  animation: fade-up var(--pf-dur-slow) var(--pf-ease) both;
+}
+
+/* The guest's own menu. Large photography, the dish named plainly, and a
+   card that lifts a few millimetres and lets the picture come forward on
+   hover. No rotation: a tilted menu is a gimmick, not a restaurant. */
+.digital-menu-grid {
+  perspective: 1400px;
+}
+
+.menu-card,
+.recs-card,
+.ai-rec-card {
+  transition:
+    transform 260ms var(--pf-ease),
+    box-shadow 260ms var(--pf-ease),
+    border-color 260ms var(--pf-ease);
+}
+
+@media (hover: hover) {
+  .menu-card:hover,
+  .recs-card:hover,
+  .ai-rec-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--pf-line-strong);
+    box-shadow: var(--pf-elev-3);
+  }
+
+  /* The photograph moves forward, not the whole card. This is the same
+     move the public site makes with `.food-card`, so the menu reads as the
+     same object in two places. */
+  .menu-card:hover .menu-card-img,
+  .recs-card:hover .recs-card-image,
+  .ai-rec-card:hover .ai-rec-img-wrap img {
+    transform: scale(1.05);
+  }
+}
+
+.menu-card-img,
+.recs-card-image,
+.ai-rec-img-wrap img {
+  transition: transform 620ms var(--pf-ease);
+}
+
+.cart-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--pf-line-neutral);
+}
+
+.cart-line img {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.cart-line strong {
+  display: block;
+  font-size: 14px;
+  color: var(--pf-text);
+}
+
+.cart-totals {
+  padding: 16px 0 0;
+  margin-top: 14px;
+  border-top: 1px solid var(--pf-line);
+}
+
+.cart-totals > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 13.5px;
+  color: var(--pf-text-2);
+}
+
+.cart-totals strong {
+  color: var(--pf-text);
+}
+
+.cart-grand,
+.cart-total-row.cart-grand {
+  margin-top: 6px;
+  padding-top: 11px !important;
+  border-top: 1px solid var(--pf-line);
+  font-size: 15px !important;
+}
+
+.cart-grand strong {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--pf-gold-light);
+}
+
+.order-guarantee {
+  margin: 16px 0 0;
+  padding: 11px 14px;
+  border: 1px dashed var(--pf-line);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--pf-text-3);
+}
+
+/* ---- the bill, as a piece of paper ----
+   Dark stock, thin rules, one gold total. A receipt is a document, and a
+   document is laid out rather than decorated. */
+
+.history-bill {
+  position: relative;
+  padding: clamp(16px, 2vw, 22px);
+  border: 1px solid var(--pf-line);
+  border-radius: 16px;
+  /* Very slightly warmer and flatter than a card: paper under the same
+     light does not cast a shadow the way a raised surface does. */
+  background: linear-gradient(
+    180deg,
+    rgba(26, 23, 18, 0.96),
+    rgba(19, 17, 13, 0.96)
+  );
+  box-shadow: var(--pf-elev-2), var(--pf-rim);
+}
+
+.history-bill.history-paid {
+  border-left: 3px solid var(--pf-ok);
+}
+
+.history-bill.history-partially_paid {
+  border-left: 3px solid var(--pf-warn);
+}
+
+.history-bill.history-unpaid {
+  border-left: 3px solid var(--pf-text-3);
+}
+
+.history-bill-head {
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--pf-line);
+}
+
+.history-bill-lines > div {
+  padding: 4px 0;
+}
+
+.history-bill-lines strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.history-total-line strong {
+  font-family: var(--font-display);
+  font-size: 21px;
+  color: var(--pf-gold-light);
+}
+
+.history-bill-foot {
+  padding-top: 11px;
+  border-top: 1px dashed var(--pf-line);
+}
+
+.history-totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.history-total {
+  padding: 14px 16px;
+  border: 1px solid var(--pf-line);
+  border-radius: 14px;
+  background: var(--pf-surface-2);
+  box-shadow: var(--pf-elev-1);
+}
+
+.history-total strong {
+  font-family: var(--font-display);
+  font-size: 21px;
+  color: var(--pf-text);
+}
+
+/* ---- reservations ---- */
+
+.history-state,
+.res-state {
+  display: inline-flex;
+  padding: 4px 12px;
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  background: var(--pf-gold-faint);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pf-text-2);
+  white-space: nowrap;
+}
+
+.history-state-paid {
+  border-color: rgba(111, 202, 155, 0.3);
+  background: var(--pf-ok-bg);
+  color: var(--pf-ok);
+}
+
+.history-state-partially_paid {
+  border-color: rgba(224, 164, 88, 0.3);
+  background: var(--pf-warn-bg);
+  color: var(--pf-warn);
+}
+
+.history-state-unpaid {
+  color: var(--pf-text-3);
+}
+
+/* ---- reservations pass ---- */
+
+.res-pass-card {
+  border: 1px solid var(--pf-line);
+  border-radius: 16px;
+  background: var(--pf-surface-2);
+  box-shadow: var(--pf-elev-2);
+  overflow: hidden;
+}

@@ -1,0 +1,334 @@
+/* ============================================================================
+   17. RESPONSIVE
+
+   Three behaviours, in order of how far the window has closed:
+
+     1080px  the sidebar stops being furniture and becomes a drawer
+      768px  two columns become one, and the lifecycle stepper goes vertical
+      430px  everything is a single column and every button is full width
+
+   Below 320px the same rules simply have less room, so nothing new is
+   needed - which is the point of testing at that width at all.
+   ========================================================================= */
+
+@media (max-width: 1280px) {
+  .shell-sidebar {
+    width: 258px;
+  }
+
+  .shell-collapsed .shell-sidebar {
+    width: 76px;
+  }
+
+  .dashboard-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-panels,
+  .dashboard-panels.lower-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- the drawer ---- */
+
+@media (max-width: 1080px) {
+  .shell-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 288px;
+    transform: translateX(-100%);
+    transition: transform var(--pf-dur-slow) var(--pf-ease);
+  }
+
+  .shell-drawer-open .shell-sidebar {
+    transform: none;
+    box-shadow: var(--pf-elev-4);
+  }
+
+  .shell-drawer-open .shell-scrim {
+    display: block;
+  }
+
+  .shell-drawer-close,
+  .shell-menu-button {
+    display: grid;
+  }
+
+  /* A rail cannot be collapsed once it is covering the page, so the
+     collapse control is withdrawn with it. */
+  .shell-collapse {
+    display: none;
+  }
+
+  /* The labels come back: on a drawer there is room for them, and a drawer
+     full of unlabelled icons would be a puzzle. */
+  .shell-collapsed .shell-sidebar {
+    width: 288px;
+  }
+
+  .shell-collapsed .shell-brand-text,
+  .shell-collapsed .shell-nav-group-label,
+  .shell-collapsed .shell-nav-copy,
+  .shell-collapsed .shell-account-copy,
+  .shell-collapsed .shell-signout .shell-nav-label {
+    display: revert;
+  }
+
+  .shell-collapsed .shell-brand {
+    justify-content: flex-start;
+    padding-inline: 20px;
+  }
+
+  .shell-collapsed .shell-nav {
+    padding-inline: 12px;
+  }
+
+  .shell-collapsed .shell-nav-item,
+  .shell-collapsed .shell-signout,
+  .shell-collapsed .shell-account-card {
+    justify-content: flex-start;
+    padding-inline: 12px;
+  }
+
+  .shell-collapsed .shell-nav-badge {
+    position: static;
+    min-width: 21px;
+    height: 21px;
+    padding: 0 6px;
+    font-size: 10.5px;
+    border-color: var(--pf-line);
+    background: var(--pf-gold-faint);
+  }
+
+  /* Nothing hovers on a touch screen, so a tooltip that only appears on
+     hover would simply never be seen. The drawer carries a title instead. */
+  .shell-collapsed .shell-nav-item[data-tip]::after,
+  .shell-collapsed .shell-signout[data-tip]::after {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .kitchen-workflow {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .shell-page {
+    padding: 18px 14px 40px;
+  }
+
+  .shell-utility {
+    min-height: 56px;
+  }
+
+  .stats-grid,
+  .mini-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+  }
+
+  .stat-card {
+    padding: 14px 15px;
+  }
+
+  .table-context-bar {
+    gap: 8px;
+    padding: 12px 14px;
+  }
+
+  .table-context-bar small {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 13px 16px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* One line per step rather than a horizontal scroll the reader has to
+     discover. */
+  .lifecycle-stepper,
+  .lifecycle-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: visible;
+  }
+
+  .lifecycle-stage,
+  .lifecycle-step {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    width: 100%;
+    text-align: left;
+  }
+
+  /* The connector rotates to vertical. */
+  .lifecycle-stage::before,
+  .lifecycle-step::before {
+    top: -50%;
+    left: 13px;
+    width: 1px;
+    height: 100%;
+  }
+
+  .lifecycle-label,
+  .step-label {
+    white-space: normal;
+  }
+
+  .modal-content,
+  .order-detail-modal {
+    max-height: 92vh;
+  }
+
+  .history-totals {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 430px) {
+  .stats-grid,
+  .mini-grid,
+  .history-totals,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .shell-page-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cp-greeting h1 {
+    font-size: clamp(24px, 8.4vw, 32px);
+  }
+
+  /* Labels and controls stack so nothing is squeezed under 44px. */
+  .form-actions,
+  .dashboard-actions,
+  .pay-actions,
+  .pay-attempt-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .action-btn,
+  .edit-btn,
+  .delete-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .kitchen-workflow {
+    grid-template-columns: 1fr;
+  }
+
+  .bar-chart {
+    height: 158px;
+    gap: 5px;
+  }
+
+  .bar-value {
+    display: none;
+  }
+
+  .modal-backdrop {
+    padding: 0;
+  }
+
+  .modal-content,
+  .order-detail-modal {
+    width: 100%;
+    max-height: 100vh;
+    max-height: 100dvh;
+    height: 100%;
+    border-radius: 0;
+    border: 0;
+  }
+
+  .modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--pf-surface);
+  }
+}
+
+@media (max-width: 375px) {
+  .stats-grid,
+  .mini-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card strong {
+    font-size: 27px;
+  }
+
+  .shell-account-copy strong {
+    max-width: 110px;
+  }
+}
+
+/* 320px: the floor. Everything a single column, nothing that needs a
+   second row of viewport. */
+@media (max-width: 320px) {
+  .shell-page {
+    padding: 14px 11px 32px;
+  }
+
+  .shell-utility {
+    padding-inline: 11px;
+  }
+
+  .cart-line {
+    flex-wrap: wrap;
+  }
+
+  .cp-greeting {
+    padding: 20px 16px;
+  }
+
+  .table-context-bar {
+    padding: 11px 12px;
+  }
+}
+
+/* A touch screen has no hover, so every hover-only movement is switched
+   off. The lift is a pointer affordance; on touch it is just a jump. */
+@media (hover: none) {
+  .shell-nav-item:hover,
+  .shell-signout:hover,
+  .shell-menu-button:hover,
+  .shell-collapse:hover {
+    transform: none;
+  }
+
+  .menu-card,
+  .recs-card,
+  .ai-rec-card {
+    transform: none !important;
+  }
+
+  .menu-card-img,
+  .recs-card-image,
+  .ai-rec-img-wrap img {
+    transform: none !important;
+  }
+}

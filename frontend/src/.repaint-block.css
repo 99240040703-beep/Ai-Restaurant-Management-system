@@ -1,0 +1,1632 @@
+/* ============================================================================
+   20. THE OLD LIGHT LAYER, REPAINTED
+
+   App.css is a light-theme stylesheet. portal.css had been overriding the
+   shell, the KPI cards, the tables and the forms, but a long tail of
+   components - chips, pills, menu cards, kitchen tickets, the payment
+   ledger, the AI charts - were still being drawn in near-black text on
+   white, which is what made the signed-in application read as a different
+   product from the landing page.
+
+   This section repaints that tail in the same light as everything above
+   it. It is one layer, not a second design system: every rule here points
+   at the same tokens, the same four elevation levels, and the same warm
+   accent. Grouped by what it fixes rather than by which file it came from.
+   ========================================================================= */
+
+/* ---- 20.1 form controls, at last scoped ----
+   App.css styles `input`, `select` and `textarea` bare, which reaches the
+   public site as well as the portal. Scoping the override to the shell
+   repaints the portal without touching the marketing pages. */
+
+.shell-root input:not([type="checkbox"]):not([type="radio"]),
+.shell-root select,
+.shell-root textarea {
+  background: rgba(0, 0, 0, 0.26);
+  border-color: var(--pf-line);
+  color: var(--pf-text);
+}
+
+.shell-root input::placeholder,
+.shell-root textarea::placeholder {
+  color: var(--pf-text-3);
+}
+
+.shell-root input:focus,
+.shell-root select:focus,
+.shell-root textarea:focus {
+  outline: none;
+  border-color: var(--pf-gold);
+  box-shadow: 0 0 0 3px rgba(212, 169, 92, 0.12);
+}
+
+/* A checkbox and a radio are a different object: a small lit square, not
+   a filled text field. */
+.shell-root input[type="checkbox"],
+.shell-root input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--pf-gold);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.shell-root input[type="radio"] {
+  border-radius: 999px;
+}
+
+.shell-root .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 44px;
+  color: var(--pf-text-2);
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+/* ---- 20.2 page padding ----
+   The shell owns the page gutter now. A page that also carries its own
+   container padding would be inset twice, which is most of why the old
+   screens looked crowded. */
+
+.shell-root .page-container,
+.shell-root .dashboard-page,
+.shell-root .recs-tab-view,
+.shell-root .bill-tab-view,
+.shell-root .premium-page {
+  padding: 0;
+  max-width: none;
+}
+
+.shell-root .page-header {
+  display: none;
+}
+
+/* The shell already prints the page title, so a page's own duplicate
+   heading is dropped rather than shown twice. The switch and the range
+   controls inside a page header are kept, because they are the page's
+   own controls and would otherwise be lost with it. */
+.shell-root .page-header > div:first-child {
+  display: none;
+}
+
+.shell-root .page-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+/* ---- 20.3 surfaces ----
+   One card, one recipe. Anything that is a raised surface gets the same
+   hairline, the same warm fill and the same lit top edge, so a page built
+   from a dozen different components still looks like one table. */
+
+.shell-root :is(
+    .card,
+    .panel,
+    .table-card,
+    .form-card,
+    .detail-section,
+    .summary-panel,
+    .chart-panel,
+    .operations-panel,
+    .menu-panel,
+    .menu-summary-card,
+    .cart-items-card,
+    .dining-options-card,
+    .summary-card,
+    .order-history,
+    .order-track-card,
+    .active-order-tracker,
+    .payment-status-card,
+    .voucher-card,
+    .waste-stat-card,
+    .waste-breakdown-card,
+    .waste-rec-box,
+    .recs-card,
+    .ai-rec-card,
+    .ai-module-card,
+    .ai-insight-card,
+    .ai-chart-card,
+    .ai-assistant-card,
+    .ai-answer-chart,
+    .ai-answer-table,
+    .ai-data-table,
+    .ai-data-table table,
+    .rec-result-card,
+    .nlp-sandbox-card,
+    .sandbox-result-box,
+    .kitchen-column,
+    .kitchen-order-card,
+    .settings-card,
+    .loyalty-hero-card,
+    .tier-progress-card,
+    .settle-tile,
+    .settle-panel,
+    .settle-gateway-note,
+    .pay-panel,
+    .pay-attempt,
+    .pay-reconcile,
+    .settle-provider-bar,
+    .bulk-action-bar,
+    .selection-action-bar,
+    .image-library-thumb,
+    .image-preview-box,
+    .menu-image-picker,
+    .qr-preview-card,
+    .dish-modal,
+    .dish-modal-body,
+    .empty-column,
+    .nlp-sandbox-card
+  ) {
+  color: var(--pf-text-2);
+  background: var(--pf-surface-2);
+  border: 1px solid var(--pf-line);
+  border-radius: 16px;
+  box-shadow: var(--pf-elev-1);
+}
+
+/* The lit top edge. One hairline gradient, no extra element. */
+.shell-root :is(
+    .card,
+    .panel,
+    .table-card,
+    .form-card,
+    .detail-section,
+    .summary-card,
+    .order-track-card,
+    .active-order-tracker,
+    .voucher-card,
+    .ai-module-card,
+    .ai-insight-card,
+    .ai-chart-card,
+    .rec-result-card,
+    .settle-tile,
+    .settle-panel,
+    .pay-panel,
+    .pay-attempt,
+    .loyalty-hero-card,
+    .tier-progress-card
+  )::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 169, 92, 0.32),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.shell-root :is(
+    .card,
+    .panel,
+    .table-card,
+    .form-card,
+    .detail-section,
+    .summary-card,
+    .order-track-card,
+    .active-order-tracker,
+    .voucher-card,
+    .ai-module-card,
+    .ai-insight-card,
+    .ai-chart-card,
+    .rec-result-card,
+    .settle-tile,
+    .settle-panel,
+    .pay-panel,
+    .pay-attempt,
+    .loyalty-hero-card,
+    .tier-progress-card
+  ) {
+  position: relative;
+}
+
+/* A panel that has to hold a heading keeps its own top padding. */
+.shell-root :is(.card, .panel, .table-card, .form-card, .detail-section) {
+  padding: clamp(16px, 2vw, 22px);
+  margin-bottom: 18px;
+}
+
+.shell-root :is(.card, .panel) h2,
+.shell-root :is(.card, .panel) h3,
+.shell-root .settings-card h2,
+.shell-root .table-card h2,
+.shell-root .form-card h2,
+.shell-root .qr-preview-card h3,
+.shell-root .order-history-head h3,
+.shell-root .all-orders-table summary h3,
+.shell-root .waste-rec-box h3,
+.shell-root .res-pass-card h3 {
+  color: var(--pf-text);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* ---- 20.4 menu cards, for the guest ----
+   The customer's menu is the page the landing site promised, so it gets
+   the landing site's card: real photography on top, the name in the
+   display face, the price in gold, and a hover that moves the photograph
+   forward rather than tilting the card. */
+
+.shell-root .digital-menu-grid {
+  perspective: 1400px;
+  gap: clamp(16px, 2vw, 24px);
+}
+
+.shell-root .menu-card {
+  padding: 0;
+  overflow: hidden;
+  background: var(--pf-glass);
+  border: 1px solid var(--pf-line);
+  border-radius: 20px;
+  box-shadow: var(--pf-elev-2);
+  transition:
+    transform 260ms var(--pf-ease),
+    box-shadow 260ms var(--pf-ease),
+    border-color 260ms var(--pf-ease);
+}
+
+.shell-root .card-image-wrap {
+  height: auto;
+  aspect-ratio: 4 / 3;
+  background: var(--pf-surface-3);
+  border-bottom: 1px solid var(--pf-line-neutral);
+}
+
+.shell-root .card-header-row h3,
+.shell-root .menu-card-content h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--pf-text);
+}
+
+.shell-root .dish-price {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--pf-gold-light);
+}
+
+.shell-root .dish-category,
+.shell-root .food-description,
+.shell-root .dish-description,
+.shell-root .dish-meta-line,
+.shell-root .dish-meta-cell {
+  color: var(--pf-text-3);
+}
+
+.shell-root .sold-out-overlay {
+  background: rgba(9, 8, 6, 0.66);
+  color: var(--pf-text);
+}
+
+.shell-root .diet-badge {
+  border: 1px solid rgba(245, 241, 232, 0.16);
+  background: rgba(9, 8, 6, 0.8);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.shell-root .diet-badge.veg,
+.shell-root .food-veg-yes {
+  color: #7ddc9a;
+}
+
+.shell-root .diet-badge.non-veg,
+.shell-root .diet-mini.nonveg,
+.shell-root .food-veg-no {
+  color: #f0a49b;
+}
+
+.shell-root .diet-mini.veg {
+  color: #7ddc9a;
+}
+
+.shell-root .featured-ribbon {
+  border: 1px solid var(--pf-line-strong);
+  background: rgba(9, 8, 6, 0.82);
+  color: var(--pf-gold-light);
+}
+
+.shell-root .card-zoom-hint {
+  background: rgba(9, 8, 6, 0.78);
+  border: 1px solid var(--pf-line);
+  color: var(--pf-gold-light);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.shell-root .fav-btn {
+  border: 1px solid var(--pf-line);
+  background: rgba(9, 8, 6, 0.8);
+  color: var(--pf-text-2);
+}
+
+.shell-root .fav-btn:hover {
+  border-color: var(--pf-line-strong);
+  color: var(--pf-gold);
+}
+
+.shell-root .fav-btn.active {
+  border-color: var(--pf-line-strong);
+  background: var(--pf-gold-faint);
+  color: var(--pf-gold-light);
+}
+
+/* ---- 20.5 chips, pills and small controls ----
+   A chip is a label, not a button. It gets a hairline and a quiet fill;
+   the selected one gets the gold. */
+
+.shell-root :is(
+    .cat-pill,
+    .diet-chip,
+    .history-filter-btn,
+    .status-filter-tabs button,
+    .pill-switch button,
+    .pay-view-switch button,
+    .ai-range-chip,
+    .ai-suggestion-chip,
+    .featured-chip,
+    .modal-meta-chip,
+    .recs-chip,
+    .ai-badge-chip
+  ) {
+  color: var(--pf-text-2);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  transition:
+    background-color 200ms var(--pf-ease),
+    border-color 200ms var(--pf-ease),
+    color 200ms var(--pf-ease),
+    transform 200ms var(--pf-ease);
+}
+
+.shell-root :is(
+    .cat-pill:hover,
+    .diet-chip:hover,
+    .history-filter-btn:hover,
+    .status-filter-tabs button:hover,
+    .pill-switch button:hover,
+    .pay-view-switch button:hover,
+    .featured-chip:hover
+  ) {
+  transform: translateY(-1px);
+  border-color: var(--pf-line-strong);
+  background: var(--pf-gold-faint);
+  color: var(--pf-text);
+}
+
+.shell-root :is(
+    .cat-pill.active,
+    .diet-chip.active,
+    .history-filter-btn.active,
+    .status-filter-tabs button.active,
+    .pill-switch button.active,
+    .pay-view-switch button.active,
+    .featured-chip.active
+  ) {
+  border-color: transparent;
+  background: var(--gold-gradient);
+  color: var(--pf-ink);
+}
+
+/* A filter row that is a set of tabs wants a little more room than a
+   chip does, and a resting state that is clearly not a button. */
+.shell-root :is(.status-filter-tabs button, .pill-switch button, .pay-view-switch button) {
+  min-height: 44px;
+  padding: 10px 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.shell-root .count-badge,
+.shell-root .info-badge,
+.shell-root .cart-badge {
+  border: 1px solid var(--pf-line);
+  background: var(--pf-gold-faint);
+  color: var(--pf-gold-light);
+}
+
+/* ---- 20.6 buttons ---- */
+
+.shell-root :is(
+    .add-btn,
+    .view-cart-btn,
+    .redeem-btn,
+    .redeem-action-btn,
+    .clear-search-btn,
+    .image-upload-btn,
+    .bulk-button,
+    .dev-action,
+    .ops-clear-btn,
+    .transition-btn,
+    .kitchen-action-btn
+  ) {
+  color: var(--pf-text);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 200ms var(--pf-ease),
+    background-color 200ms var(--pf-ease),
+    border-color 200ms var(--pf-ease),
+    color 200ms var(--pf-ease);
+}
+
+.shell-root :is(
+    .add-btn:hover,
+    .view-cart-btn:hover,
+    .redeem-btn:hover,
+    .redeem-action-btn:hover,
+    .image-upload-btn:hover,
+    .bulk-button:hover:not(:disabled),
+    .dev-action:hover:not(:disabled),
+    .transition-btn:hover
+  ) {
+  transform: translateY(-2px);
+  border-color: var(--pf-line-strong);
+  background: var(--pf-gold-faint);
+  color: var(--pf-gold-light);
+}
+
+.shell-root :is(.add-to-cart-btn-primary, .checkout-btn) {
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.shell-root .add-to-cart-btn-primary {
+  color: var(--pf-ink);
+  background: var(--gold-gradient);
+  border: 1px solid transparent;
+  box-shadow: var(--pf-shadow-gold);
+}
+
+.shell-root .add-to-cart-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 44px rgba(212, 169, 92, 0.26);
+}
+
+.shell-root .checkout-btn {
+  color: var(--pf-ink);
+  background: var(--gold-gradient);
+  border: 1px solid transparent;
+  box-shadow: var(--pf-shadow-gold);
+  min-height: 46px;
+}
+
+.shell-root .checkout-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.shell-root .checkout-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.shell-root .cart-stepper button,
+.shell-root .cart-stepper .stepper-btn {
+  min-width: 40px;
+  min-height: 40px;
+  color: var(--pf-text);
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid var(--pf-line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    border-color 200ms var(--pf-ease),
+    background-color 200ms var(--pf-ease);
+}
+
+.shell-root .cart-stepper button:hover {
+  border-color: var(--pf-line-strong);
+  background: var(--pf-gold-faint);
+}
+
+.shell-root .mode-radio {
+  color: var(--pf-text-2);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--pf-line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    border-color 200ms var(--pf-ease),
+    background-color 200ms var(--pf-ease),
+    color 200ms var(--pf-ease);
+}
+
+.shell-root .mode-radio:hover {
+  border-color: var(--pf-line-strong);
+  color: var(--pf-text);
+}
+
+.shell-root .mode-radio.active {
+  border-color: var(--pf-line-strong);
+  background: var(--pf-gold-faint);
+  color: var(--pf-gold-light);
+}
+
+.shell-root .search-box input {
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  color: var(--pf-text);
+}
+
+.shell-root .search-box .search-icon,
+.shell-root .clear-search-btn {
+  color: var(--pf-text-3);
+}
+
+.shell-root .clear-search-btn:hover {
+  color: var(--pf-gold);
+}
+
+.shell-root .disabled-input {
+  color: var(--pf-text-3);
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px dashed var(--pf-line);
+}
+
+/* ---- 20.7 status, states and lifecycle ----
+   One hue per meaning, taken from the same four the rest of the product
+   uses. Nothing is coloured for decoration. */
+
+.shell-root .status-pill,
+.shell-root .payment-status-pill,
+.shell-root .payment-status,
+.shell-root .pay-state-badge,
+.shell-root .history-state,
+.shell-root .res-state,
+.shell-root .order-tag,
+.shell-root .table-badge,
+.shell-root .panel-tag,
+.shell-root .ai-module-badge,
+.shell-root .price-change-pill,
+.shell-root .recs-trending-badge,
+.shell-root .ai-match-badge,
+.shell-root .settle-mode {
+  border: 1px solid var(--pf-line);
+  background: var(--pf-gold-faint);
+  color: var(--pf-text-2);
+}
+
+.shell-root :is(
+    .status-pill.placed,
+    .status-pill.confirmed,
+    .status-pill.preparing,
+    .status-pill.ready,
+    .status-pill.served
+  ) {
+  border-color: var(--pf-line);
+  background: var(--pf-gold-faint);
+  color: var(--pf-gold-light);
+}
+
+.shell-root :is(.status-pill.cancelled, .pay-state-failed, .pay-state-cancelled) {
+  border-color: rgba(217, 100, 89, 0.3);
+  background: var(--pf-danger-bg);
+  color: var(--pf-danger);
+}
+
+.shell-root :is(.status-pill.paid, .pay-state-success, .history-state-paid) {
+  border-color: rgba(111, 202, 155, 0.3);
+  background: var(--pf-ok-bg);
+  color: var(--pf-ok);
+}
+
+.shell-root :is(
+    .status-pill.pending,
+    .status-pill.preparing,
+    .status-pill.ready,
+    .pay-state-pending,
+    .history-state-partially_paid,
+    .payment-status-pill.pending,
+    .payment-status.pending
+  ) {
+  border-color: rgba(224, 164, 88, 0.3);
+  background: var(--pf-warn-bg);
+  color: var(--pf-warn);
+}
+
+.shell-root :is(.payment-status.unpaid, .payment-status-pill.unpaid, .history-state-unpaid) {
+  border-color: var(--pf-line);
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--pf-text-3);
+}
+
+.shell-root :is(.payment-status.refunded, .payment-status-pill.refunded, .price-change-pill.decrease) {
+  border-color: rgba(127, 168, 232, 0.28);
+  background: var(--pf-info-bg);
+  color: var(--pf-info);
+}
+
+.shell-root :is(.price-change-pill.increase, .settle-tile-outstanding strong) {
+  color: var(--pf-danger);
+}
+
+.shell-root .payment-label,
+.shell-root .pay-panel-title,
+.shell-root .settle-tile-label,
+.shell-root .history-total-label,
+.shell-root .detail-grid label,
+.shell-root .detail-item label,
+.shell-root .form-group label,
+.shell-root .pay-range-row label,
+.shell-root .pay-filter-row label {
+  color: var(--pf-text-3);
+}
+
+.shell-root .payment-status-card small,
+.shell-root .pay-panel-note,
+.shell-root .pay-panel-off,
+.shell-root .settle-provider-note,
+.shell-root .settle-tile-sub,
+.shell-root .ops-answer-note,
+.shell-root .rec-reason,
+.shell-root .recs-limitations,
+.shell-root .order-guarantee,
+.shell-root .history-item-qty,
+.shell-root .history-item-total,
+.shell-root .pay-attempt-meta,
+.shell-root .cart-unit-price,
+.shell-root .cart-prep-hint,
+.shell-root .wait-hint,
+.shell-root .order-time,
+.shell-root .item-notes,
+.shell-root .item-price,
+.shell-root .table-item .notes,
+.shell-root .ops-section-limit,
+.shell-root .ai-answer-note {
+  color: var(--pf-text-3);
+}
+
+/* The stepper: a rule between dots, gold once it has been passed. */
+.shell-root .stage-circle,
+.shell-root .step-circle {
+  color: var(--pf-text-3);
+  background: var(--pf-surface-3);
+  border: 1px solid var(--pf-line);
+}
+
+.shell-root .stage-circle.placed,
+.shell-root .stage-circle.confirmed {
+  border-color: var(--pf-line);
+  background: var(--pf-gold-faint);
+  color: var(--pf-gold-light);
+}
+
+.shell-root .stage-circle.preparing,
+.shell-root .stage-circle.ready {
+  border-color: rgba(224, 164, 88, 0.34);
+  background: var(--pf-warn-bg);
+  color: var(--pf-warn);
+}
+
+.shell-root .stage-circle.served {
+  border-color: rgba(111, 202, 155, 0.32);
+  background: var(--pf-ok-bg);
+  color: var(--pf-ok);
+}
+
+.shell-root .stage-circle.cancelled {
+  border-color: rgba(217, 100, 89, 0.3);
+  background: var(--pf-danger-bg);
+  color: var(--pf-danger);
+}
+
+.shell-root .stage-label,
+.shell-root .step-label,
+.shell-root .lifecycle-label {
+  color: var(--pf-text-3);
+}
+
+.shell-root .stage-label.active,
+.shell-root .step-label.active,
+.shell-root .lifecycle-label.active {
+  color: var(--pf-gold-light);
+}
+
+.shell-root .stage-line,
+.shell-root .lifecycle-stage::before,
+.shell-root .lifecycle-step::before {
+  background: var(--pf-line);
+}
+
+.shell-root .stage-line.completed,
+.shell-root .lifecycle-stage.done::before,
+.shell-root .lifecycle-step.completed::before {
+  background: var(--pf-gold-dark);
+}
+
+.shell-root :is(.stage-circle.completed, .lifecycle-stage.done .lifecycle-dot, .lifecycle-step.completed .step-circle) {
+  border-color: transparent;
+  background: var(--gold-gradient);
+  color: var(--pf-ink);
+}
+
+.shell-root :is(.stage-circle.active, .lifecycle-stage.active .lifecycle-dot, .lifecycle-step.active .step-circle) {
+  border-color: var(--pf-gold);
+  background: var(--pf-gold-faint);
+  color: var(--pf-gold-light);
+}
+
+/* ---- 20.8 the kitchen ----
+   Readability beats decoration: this board is read across a pass for
+   hours. Large reference numbers, high contrast, one hue per column, and
+   a shadow shallow enough that a screen full of tickets stays readable. */
+
+.shell-root .kitchen-column {
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: none;
+}
+
+.shell-root .kitchen-column-header {
+  background: rgba(0, 0, 0, 0.26);
+  border-bottom: 1px solid var(--pf-line);
+}
+
+.shell-root .column-title h2 {
+  color: var(--pf-text-2);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.shell-root .kitchen-order-card {
+  color: var(--pf-text-2);
+  background: var(--pf-surface-2);
+  border: 1px solid var(--pf-line-neutral);
+  border-radius: 13px;
+  box-shadow: var(--pf-elev-1);
+  transition:
+    transform var(--pf-dur) var(--pf-ease),
+    border-color var(--pf-dur) var(--pf-ease),
+    box-shadow var(--pf-dur) var(--pf-ease);
+}
+
+.shell-root .kitchen-order-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--pf-line-strong);
+  box-shadow: var(--pf-elev-2);
+}
+
+.shell-root .order-ref {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--pf-text);
+}
+
+.shell-root .item-name,
+.shell-root .order-item-line,
+.shell-root .item-main strong {
+  color: var(--pf-text-2);
+}
+
+.shell-root .item-qty {
+  color: var(--pf-gold-light);
+}
+
+.shell-root .order-total,
+.shell-root .settle-tile strong,
+.shell-root .history-total strong,
+.shell-root .pay-amount,
+.shell-root .waste-stat-card strong,
+.shell-root .settle-summary-line strong,
+.shell-root .forecast-amount {
+  font-family: var(--font-display);
+  color: var(--pf-text);
+}
+
+.shell-root .settle-tile-collected strong,
+.shell-root .history-total strong.collected,
+.shell-root .settle-cell-collected {
+  color: var(--pf-ok);
+}
+
+.shell-root .settle-cell-outstanding,
+.shell-root .history-total strong.outstanding {
+  color: var(--pf-danger);
+}
+
+.shell-root .served-badge,
+.shell-root .recs-trending-badge,
+.shell-root .featured-flag {
+  border: 1px solid var(--pf-line);
+  background: var(--pf-gold-faint);
+  color: var(--pf-gold-light);
+}
+
+/* ---- 20.9 tables ----
+   Data tables are read, not looked at, so the header is quiet, the rules
+   are hairline, and every money cell uses tabular figures. */
+
+.shell-root :is(
+    .history-table,
+    .all-orders-table,
+    .orders-table-panel table,
+    .menu-table-panel table,
+    .table-responsive table,
+    .table-container table,
+    .ai-data-table table,
+    .ai-answer-table,
+    .settings-card table
+  ) {
+  color: var(--pf-text-2);
+  background: transparent;
+  border-color: var(--pf-line-neutral);
+}
+
+.shell-root :is(
+    .history-table th,
+    .all-orders-table th,
+    .orders-table-panel th,
+    .menu-table-panel th,
+    .table-responsive thead th,
+    .table-container th,
+    .ai-data-table th,
+    .ai-answer-table thead th,
+    th
+  ) {
+  color: var(--pf-text-3);
+  background: rgba(0, 0, 0, 0.18);
+  border-bottom: 1px solid var(--pf-line-strong);
+}
+
+.shell-root :is(
+    .history-table td,
+    .orders-table-panel td,
+    .menu-table-panel td,
+    .table-responsive tbody td,
+    .table-container td,
+    .ai-answer-table td,
+    td
+  ) {
+  color: var(--pf-text-2);
+  border-bottom: 1px solid var(--pf-line-neutral);
+}
+
+.shell-root :is(
+    .history-table tbody tr:hover,
+    .orders-table-panel tbody tr:hover,
+    .menu-table-panel tbody tr:hover,
+    .table-responsive tbody tr:hover
+  ) {
+  background: rgba(212, 169, 92, 0.045);
+}
+
+.shell-root :is(.orders-table-panel, .menu-table-panel, .settle-panel) {
+  overflow: hidden;
+  background: var(--pf-surface-2);
+  border: 1px solid var(--pf-line);
+  border-radius: 16px;
+}
+
+.shell-root .food-name-cell strong,
+.shell-root .table-item strong {
+  color: var(--pf-text);
+}
+
+.shell-root .menu-table-panel tbody tr.row-selected {
+  background: var(--pf-gold-faint);
+}
+
+/* ---- 20.10 charts ----
+   The data stays flat. The depth belongs to the surface the chart is
+   printed on, never to the marks themselves: a tilted bar is a bar no one
+   can read the value of. Warm gold for the series, a warm neutral for the
+   grid, thin rules. */
+
+.shell-root .ai-svg-chart {
+  overflow: visible;
+}
+
+.shell-root .ai-grid-line {
+  stroke: rgba(212, 169, 92, 0.1);
+  stroke-width: 1;
+}
+
+.shell-root .ai-axis-label,
+.shell-root .ai-bar-label {
+  fill: var(--pf-text-3);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.shell-root .ai-bar-value {
+  fill: var(--pf-text-2);
+  font-size: 11.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.shell-root .ai-chart-line {
+  fill: none;
+  stroke: var(--pf-gold);
+  stroke-width: 2.25;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.shell-root .ai-chart-area {
+  fill: rgba(212, 169, 92, 0.1);
+  stroke: none;
+}
+
+.shell-root .ai-chart-dot {
+  fill: var(--pf-surface);
+  stroke: var(--pf-gold-light);
+  stroke-width: 2;
+}
+
+.shell-root .ai-chart-bar {
+  fill: var(--pf-gold);
+  opacity: 0.86;
+}
+
+.shell-root .ai-donut-total {
+  fill: var(--pf-text);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.shell-root .ai-donut-caption {
+  fill: var(--pf-text-3);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.shell-root .ai-donut-legend li {
+  color: var(--pf-text-2);
+}
+
+/* One warm ramp for the donut, so a colour cannot mean two different
+   things in two different charts. Lightest first, darkest last. */
+.shell-root .seg-0 {
+  stroke: #f4d28a;
+  background: #f4d28a;
+}
+
+.shell-root .seg-1 {
+  stroke: #d4a95c;
+  background: #d4a95c;
+}
+
+.shell-root .seg-2 {
+  stroke: #8d642f;
+  background: #8d642f;
+}
+
+.shell-root .seg-3 {
+  stroke: #5c421f;
+  background: #5c421f;
+}
+
+.shell-root .bar-track {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.shell-root .tier-bar-track {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.shell-root .waste-bar-item .bar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ---- 20.11 the assistant and its transcript ---- */
+
+.shell-root .ai-assistant-input,
+.shell-root .ai-assistant-answer,
+.shell-root .ai-assistant-refusal,
+.shell-root .ops-answer-empty,
+.shell-root .ops-provenance,
+.shell-root .nlp-sandbox-card,
+.shell-root .recs-empty,
+.shell-root .recs-loading {
+  color: var(--pf-text-2);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--pf-line);
+}
+
+.shell-root .ai-answer-label,
+.shell-root .ops-question-label,
+.shell-root .ops-section h4,
+.shell-root .ops-section-fact,
+.shell-root .ops-section-inference,
+.shell-root .ops-section-recommend,
+.shell-root .ops-provenance-window strong,
+.shell-root .ops-provenance-missing,
+.shell-root .recs-section-title,
+.shell-root .forecast-lbl,
+.shell-root .forecast-date,
+.shell-root .ai-kicker + span,
+.shell-root .ai-chart-card-head p,
+.shell-root .nlp-sandbox-card p {
+  color: var(--pf-text-3);
+}
+
+.shell-root .ai-answer-text,
+.shell-root .ops-question p,
+.shell-root .ops-conclusion,
+.shell-root .ops-section li,
+.shell-root .recs-card-head h4,
+.shell-root .recs-reason,
+.shell-root .rev-comment,
+.shell-root .ai-chart-card-head h3 {
+  color: var(--pf-text-2);
+}
+
+.shell-root .ops-turn,
+.shell-root .ai-module-card,
+.shell-root .complaint-card {
+  background: var(--pf-surface-2);
+  border: 1px solid var(--pf-line);
+  border-radius: 14px;
+}
+
+/* ---- 20.12 guests: sentiment, reviews, loyalty ---- */
+
+.shell-root .live-sentiment-box,
+.shell-root .review-item-card,
+.shell-root .rev-dish-tag,
+.shell-root .review-form-card,
+.shell-root .res-card-form,
+.shell-root .rewards-vouchers-grid,
+.shell-root .voucher-card {
+  color: var(--pf-text-2);
+  background: var(--pf-surface-2);
+  border: 1px solid var(--pf-line);
+  border-radius: 16px;
+  box-shadow: var(--pf-elev-1);
+}
+
+.shell-root .live-sentiment-box.positive {
+  border-color: rgba(111, 202, 155, 0.3);
+  background: var(--pf-ok-bg);
+}
+
+.shell-root .live-sentiment-box.negative {
+  border-color: rgba(217, 100, 89, 0.3);
+  background: var(--pf-danger-bg);
+}
+
+.shell-root .live-sentiment-box.neutral {
+  border-color: var(--pf-line);
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.shell-root .sentiment-badge-sm.positive {
+  border-color: rgba(111, 202, 155, 0.3);
+  background: var(--pf-ok-bg);
+  color: var(--pf-ok);
+}
+
+.shell-root .sentiment-badge-sm.negative {
+  border-color: rgba(217, 100, 89, 0.3);
+  background: var(--pf-danger-bg);
+  color: var(--pf-danger);
+}
+
+.shell-root .sentiment-badge-sm.neutral {
+  border-color: var(--pf-line);
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--pf-text-3);
+}
+
+.shell-root .star-btn {
+  color: var(--pf-text-3);
+  background: transparent;
+  border: 1px solid var(--pf-line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    color 200ms var(--pf-ease),
+    border-color 200ms var(--pf-ease),
+    background-color 200ms var(--pf-ease);
+}
+
+.shell-root .star-btn:hover {
+  border-color: var(--pf-line-strong);
+  color: var(--pf-gold);
+}
+
+.shell-root .star-btn.active {
+  border-color: transparent;
+  color: var(--pf-gold);
+}
+
+.shell-root .rev-stars,
+.shell-root .star-rating-text {
+  color: var(--pf-gold);
+}
+
+.shell-root .rev-head strong,
+.shell-root .loyalty-hero-card h1,
+.shell-root .points-display {
+  color: var(--pf-text);
+  font-family: var(--font-display);
+}
+
+.shell-root .points-display {
+  color: var(--pf-gold-light);
+}
+
+.shell-root .kicker,
+.shell-root .tier-header,
+.shell-root .tier-perks,
+.shell-root .rewards-section-title,
+.shell-root .loyalty-notice,
+.shell-root .equiv-text,
+.shell-root .voucher-icon,
+.shell-root .waste-rec-box li,
+.shell-root .waste-breakdown-row span {
+  color: var(--pf-text-3);
+}
+
+.shell-root .tier-bar-fill {
+  background: var(--gold-gradient);
+}
+
+.shell-root .loyalty-notice {
+  border: 1px dashed var(--pf-line);
+  border-radius: 13px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px 15px;
+}
+
+/* ---- 20.13 modals ---- */
+
+.shell-root .order-detail-modal,
+.shell-root .modal-content,
+.shell-root .dish-modal {
+  color: var(--pf-text-2);
+  background: var(--pf-surface);
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 22px;
+  box-shadow: var(--pf-elev-4);
+}
+
+.shell-root .modal-header {
+  border-bottom: 1px solid var(--pf-line);
+}
+
+.shell-root .dish-modal-body h2 {
+  font-family: var(--font-display);
+  color: var(--pf-text);
+}
+
+.shell-root .dish-modal-price {
+  font-family: var(--font-display);
+  color: var(--pf-gold-light);
+}
+
+.shell-root .dish-modal-description,
+.shell-root .modal-meta-chip {
+  color: var(--pf-text-2);
+}
+
+.shell-root .no-transitions {
+  color: var(--pf-text-3);
+  border: 1px dashed var(--pf-line);
+  border-radius: 12px;
+}
+
+/* ---- 20.14 the payment ledger ----
+   Existing architecture, existing figures, existing dev simulation. Only
+   the presentation changes here: the same numbers, laid out like the rest
+   of the restaurant. */
+
+.shell-root .settle-provider-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 13px 18px;
+  margin-bottom: 16px;
+  background: var(--pf-surface-2);
+}
+
+.shell-root .settle-provider-name {
+  font-weight: 700;
+  color: var(--pf-text);
+}
+
+.shell-root .settle-mode-dev {
+  border-color: var(--pf-line);
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--pf-text-2);
+}
+
+.shell-root .settle-mode-test {
+  border-color: rgba(224, 164, 88, 0.3);
+  background: var(--pf-warn-bg);
+  color: var(--pf-warn);
+}
+
+.shell-root .settle-mode-live {
+  border-color: rgba(111, 202, 155, 0.3);
+  background: var(--pf-ok-bg);
+  color: var(--pf-ok);
+}
+
+.shell-root .settle-gateway-note {
+  padding: 11px 15px;
+  margin-bottom: 16px;
+  border-radius: 13px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.shell-root .pay-panel-ref code,
+.shell-root .pay-attempt-meta code,
+.shell-root .history-provider-ref code,
+.shell-root .qr-url {
+  color: var(--pf-gold-light);
+  background: rgba(212, 169, 92, 0.08);
+  border: 1px solid var(--pf-line);
+  border-radius: 6px;
+  padding: 1px 6px;
+  word-break: break-all;
+}
+
+.shell-root .pay-qr-wrap,
+.shell-root .pay-qr,
+.shell-root .qr-frame {
+  background: #f7f2e8;
+  border: 1px solid var(--pf-line-strong);
+  border-radius: 12px;
+}
+
+.shell-root .pay-panel-warn {
+  color: var(--pf-warn);
+}
+
+.shell-root .settle-summary-line,
+.shell-root .pay-pager {
+  color: var(--pf-text-3);
+}
+
+.shell-root .history-items li,
+.shell-root .history-bill-lines > div {
+  color: var(--pf-text-2);
+  border-bottom: 1px solid var(--pf-line-neutral);
+}
+
+.shell-root .history-total-line {
+  border-top: 1px solid var(--pf-line);
+  padding-top: 11px;
+}
+
+.shell-root .history-total-line strong {
+  font-family: var(--font-display);
+  font-size: 21px;
+  color: var(--pf-gold-light);
+}
+
+.shell-root .history-ref {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--pf-text);
+}
+
+.shell-root .history-date {
+  color: var(--pf-text-3);
+}
+
+/* ---- 20.15 the entry page and the table QR ----
+   Reached by scanning a printed code, so it is a full page rather than a
+   panel inside the shell. It still has to look like the same restaurant. */
+
+.entry-card,
+.entry-table-header,
+.entry-welcome,
+.entry-foot,
+.table-context-bar {
+  color: var(--pf-text-2);
+}
+
+.entry-card {
+  background: var(--pf-surface-2);
+  border: 1px solid var(--pf-line);
+  border-radius: 20px;
+  box-shadow: var(--pf-elev-3);
+}
+
+.entry-brand-mark {
+  background: var(--pf-gold-faint);
+  border: 1px solid var(--pf-line);
+  color: var(--pf-gold);
+}
+
+.entry-table-badge {
+  background: var(--pf-surface-2);
+  border: 1px solid var(--pf-line);
+  color: var(--pf-text);
+}
+
+.entry-table-badge strong {
+  color: var(--pf-gold-light);
+}
+
+.entry-table-badge small,
+.entry-table-label,
+.entry-hint,
+.entry-welcome,
+.entry-foot {
+  color: var(--pf-text-3);
+}
+
+.entry-secondary-btn {
+  color: var(--pf-text);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.entry-secondary-btn:hover:not(:disabled) {
+  border-color: var(--pf-line-strong);
+  background: var(--pf-gold-faint);
+  color: var(--pf-text);
+}
+
+.entry-alert.error {
+  border-color: rgba(217, 100, 89, 0.3);
+  background: var(--pf-danger-bg);
+  color: #f2a79f;
+}
+
+.entry-alert.warn {
+  border-color: rgba(224, 164, 88, 0.3);
+  background: var(--pf-warn-bg);
+  color: var(--pf-warn);
+}
+
+/* ---- 20.16 the image picker and the menu editor ---- */
+
+.shell-root .image-preview-box,
+.shell-root .image-library-thumb {
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid var(--pf-line);
+  border-radius: 12px;
+}
+
+.shell-root .image-preview-empty,
+.shell-root .image-url-label,
+.shell-root .image-library-title,
+.shell-root .image-error-text,
+.shell-root .menu-image-picker > label:first-child,
+.shell-root .menu-sort-toggles label {
+  color: var(--pf-text-3);
+}
+
+.shell-root .image-library-thumb.active {
+  border-color: var(--pf-gold);
+  box-shadow: 0 0 0 3px rgba(212, 169, 92, 0.14);
+}
+
+.shell-root .bulk-button,
+.shell-root .selection-action-bar {
+  color: var(--pf-text);
+}
+
+.shell-root .bulk-button.danger {
+  border-color: rgba(217, 100, 89, 0.28);
+  background: var(--pf-danger-bg);
+  color: var(--pf-danger);
+}
+
+.shell-root .featured-strip-title,
+.shell-root .settings-card h3,
+.shell-root .form-card h3 {
+  color: var(--pf-text);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* A message the page never had a rule for. */
+.shell-root .success-message {
+  padding: 13px 16px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(111, 202, 155, 0.3);
+  border-radius: 13px;
+  background: var(--pf-ok-bg);
+  color: #a6dfc3;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ---- 20.17 the sidebar's own icons ----
+   App.css styled `.nav-icon` as a light chip for the old sidebar. The
+   shell draws its own, so the old box and margin are withdrawn here
+   rather than left to fight the new rule. */
+
+.shell-root .shell-nav-item .nav-icon,
+.shell-root .shell-signout .nav-icon {
+  display: grid;
+  place-items: center;
+  margin-right: 0;
+  background: none;
+  border-radius: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* ---- 20.18 the payment provider, if one is ever set up ----
+   A place to put the card, so the Settings page does not have to invent
+   one later. Presentation only: nothing here reads or writes a provider. */
+
+.provider-card {
+  position: relative;
+  padding: clamp(18px, 2.4vw, 26px);
+  border: 1px solid var(--pf-line);
+  border-radius: 18px;
+  background: var(--pf-surface-2);
+  box-shadow: var(--pf-elev-2);
+  overflow: hidden;
+}
+
+.provider-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 169, 92, 0.4),
+    transparent
+  );
+}
+
+.provider-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.provider-eyebrow {
+  margin: 0 0 9px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--pf-text-3);
+}
+
+.provider-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(21px, 2.4vw, 27px);
+  font-weight: 600;
+  color: var(--pf-text);
+}
+
+.provider-copy {
+  margin: 10px 0 0;
+  max-width: 58ch;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--pf-text-2);
+}
+
+.provider-optional {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 13px;
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  background: var(--pf-gold-faint);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pf-gold-light);
+  white-space: nowrap;
+}
+
+.provider-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  margin-top: 16px;
+  border: 1px solid var(--pf-line);
+  border-radius: 13px;
+  background: rgba(0, 0, 0, 0.22);
+  font-size: 13px;
+  color: var(--pf-text-2);
+}
+
+.provider-status strong {
+  font-weight: 700;
+  color: var(--pf-text);
+}
+
+.provider-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--pf-text-3);
+}
+
+.provider-note {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--pf-text-3);
+}
+
+.provider-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--pf-line-neutral);
+}
+
+/* The settings tabs: Restaurant, Payments. Two rooms rather than one long
+   form with an optional section at the bottom. */
+.settings-tabs {
+  display: inline-flex;
+  gap: 6px;
+  padding: 5px;
+  margin-bottom: clamp(18px, 2.4vw, 26px);
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.settings-tabs button {
+  min-height: 40px;
+  padding: 9px 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pf-text-2);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 200ms var(--pf-ease),
+    color 200ms var(--pf-ease),
+    transform 200ms var(--pf-ease);
+}
+
+.settings-tabs button:hover {
+  color: var(--pf-text);
+}
+
+.settings-tabs button.active {
+  border-color: transparent;
+  background: var(--gold-gradient);
+  color: var(--pf-ink);
+}
