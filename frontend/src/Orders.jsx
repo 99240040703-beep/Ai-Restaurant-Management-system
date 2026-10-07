@@ -1379,7 +1379,7 @@ const isLegacyHeader = (header) => header.is_legacy === true || header.id < 0;
   </div>
   </div>
   </div>
-  )}
+  ))}
  </div>
  );
 }
